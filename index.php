@@ -11,11 +11,11 @@ require_once("Manager/AnimalManager.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bestiarium</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
-
     <?php
     $animalManager = new AnimalManager();
     $animals = $animalManager->selectAll();
@@ -23,21 +23,26 @@ require_once("Manager/AnimalManager.php");
 
     $title = "Bienvenue";
     ?>
-    <h1>Le Monde Animal Extraordinaire</h1>
-    <div class="flex flex-column flex-wrap">
-        <?php foreach ($animals as $animal): ?>
-            <div class="grid grid-cols-1 gap-6">
-                <!-- Carte animal-->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition transform hover:scale-105">
-                    <div class="p-4">
-                        <h2 class="text-2xl font-bold text-gray-800"><?= $animal->getName() ?></h2>
-                        <p class="text-gray-600 text-sm"><?= $animal->getIntroduction() ?></p>
-                        <p><?= $animal->getDiet() ?> </p> <p><?= $animal->getHabitat() ?></p>
-                        <a href="details.php?animal=lion" class="mt-3 inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Voir Plus</a>
+    <main>
+        <h1>Le Monde Animal Extraordinaire</h1>
+        <div>
+            <?php foreach ($animals as $animal): ?>
+                <div class="card  gap-6">
+                    <!-- <img src="images/lion.jpg"/> -->
+                    <!-- Carte animal-->
+                    <div class="card_content bg-white rounded-2xl hidden">
+                            <h2 class="card_title text-2xl font-bold text-gray-800"><?= $animal->getName() ?></h2>
+                            <p class="card_description text-gray-600 text-sm"><?= $animal->getIntroduction() ?></p>
+                            <p><?= $animal->getDiet() ?> </p>
+                            <p><?= $animal->getHabitat() ?></p>
+                            <a href="fiche.php?animal=" class="mt-3 inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Voir Plus</a>
                     </div>
+                <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-            </div>
+    </main>
+    <?php
+    require_once("footer.php");
+    ?>
 </body>
 
 </html>
