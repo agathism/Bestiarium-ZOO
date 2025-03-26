@@ -1,5 +1,8 @@
 <?php
-require_once("DatabaseManager.php");
+namespace App\Manager;
+
+use App\Model\Animal;
+
 class AnimalManager extends DatabaseManager
 {
     public function selectAll(): array
@@ -16,13 +19,13 @@ class AnimalManager extends DatabaseManager
 
         return $animals;
     }
-
+ 
     /**
      * Récupère une voiture par ID de la base de données.
      * @param  int $id
      * @return Animal
      */
-    public function selectAnimalByID(int $id): Animal|false
+    public function selectByID(int $id): Animal|false
     {
         $requete = self::getConnexion()->prepare("SELECT * FROM animal WHERE id = :id;");
         $requete->execute([
@@ -44,7 +47,7 @@ class AnimalManager extends DatabaseManager
      * @param  Car $car
      * @return bool
      */
-    public function insertAnimal(Animal $animal): bool
+    public function insert(Animal $animal): bool
     {
         $requete = self::getConnexion()->prepare("INSERT INTO animal (name,species,family,habitat,diet,lifespan,weight,height,introduction) VALUES (:name,:species,:family,:habitat,:diet,:lifespan,:weight,:height:introduction);");
         $requete->execute([
@@ -69,7 +72,7 @@ class AnimalManager extends DatabaseManager
      * @param  Car $car
      * @return bool
      */
-    public function updateAnimalByID(Animal $animal): bool
+    public function update(Animal $animal): bool
     {
         $requete = self::getConnexion()->prepare("UPDATE animal SET name = :name, species = :species, family = :family, habitat = :habitat, diet = :diet, lifespan = :lifespan, weight = :weight, height = :height, introduction = :introduction WHERE id = :id;");
         $requete->execute(
@@ -97,7 +100,7 @@ class AnimalManager extends DatabaseManager
      * @param  int $id
      * @return bool
      */
-    public function deleteAnimalByID(int $id): bool
+    public function deleteByID(int $id): bool
     {
         $requete = self::getConnexion()->prepare("DELETE FROM animal WHERE id = :id;");
         $requete->execute([

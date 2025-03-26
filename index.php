@@ -1,48 +1,91 @@
 <?php
-require_once("header.php");
-require_once("Model/Animal.php");
-require_once("Manager/DatabaseManager.php");
-require_once("Manager/AnimalManager.php");
-?>
-<!DOCTYPE html>
-<html lang="fr">
+require __DIR__ . '/vendor/autoload.php';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bestiarium</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
+use App\Controller\AdminController;
+use App\Controller\IndexController;
+use App\Controller\SecurityController;
 
-<body>
-    <?php
-    $animalManager = new AnimalManager();
-    $animals = $animalManager->selectAll();
-    //  var_dump($animals);
+// Démarrer la session et vérification de la connexion user 
+session_start();
+// Vérification si l'utilisateur est connecté
+if(isset($_SESSION["username"])){
+    $isLoggedIn = true;
+}else{
+    $isLoggedIn = false; 
+}
 
-    $title = "Bienvenue";
-    ?>
-    <main>
-        <h1>Le Monde Animal Extraordinaire</h1>
-        <div>
-            <?php foreach ($animals as $animal): ?>
-                <div class="card  gap-6">
-                    <!-- <img src="images/lion.jpg"/> -->
-                    <!-- Carte animal-->
-                    <div class="card_content bg-white rounded-2xl hidden">
-                            <h2 class="card_title text-2xl font-bold text-gray-800"><?= $animal->getName() ?></h2>
-                            <p class="card_description text-gray-600 text-sm"><?= $animal->getIntroduction() ?></p>
-                            <p><?= $animal->getDiet() ?> </p>
-                            <p><?= $animal->getHabitat() ?></p>
-                            <a href="fiche.php?animal=" class="mt-3 inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Voir Plus</a>
-                    </div>
-                <?php endforeach; ?>
-                </div>
-    </main>
-    <?php
-    require_once("footer.php");
-    ?>
-</body>
+// Récupérer les paramètres de l'URL et créer des valeurs par défaut
+if (isset($_GET['action'])) {
 
-</html>
+    $action = $_GET['action'];
+    
+} else {
+		
+    $action = 'homePage';
+}
+
+if (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+} else {
+    $id = null;
+}
+
+//Initialisation des controllers
+$indexController = new IndexController();
+$adminController = new AdminController();
+$securityController = new SecurityController();
+
+// Gérer les routes avec une suite de conditions if
+
+
+//index.php?action=homePage
+if ($action === 'homePage') {
+
+    $indexController->homePage();
+
+//index.php?action=detail&id=12
+} elseif ($action === 'detail' && !is_null($id)) {
+
+    $indexController->detailCar($id);
+
+//index.php?action=login
+} elseif ($action === 'login') {
+
+    $securityController->login();
+
+//index.php?action=register
+} elseif ($action === 'register') {
+
+    $securityController->register();
+
+//index.php?action=logout + Connecté
+} elseif ($action === 'logout' && $isLoggedIn) {
+    
+    $securityController->logout();
+
+//index.php?action=logout + Connecté
+}elseif ($action === 'admin' && $isLoggedIn) {
+
+    $adminController->dashboardAdmin();
+
+//index.php?action=add + Connecté
+} elseif ($action === 'add' && $isLoggedIn) {
+
+    $adminController->addAnimal();
+    
+//index.php?action=edit&id=10 + Connecté
+} elseif ($action === 'edit' && !is_null($id) && $isLoggedIn) {
+
+    $adminController->editAnimal($id);
+
+//index.php?action=delete&id=10 + Connecté
+} elseif ($action === 'delete' && !is_null($id) && $isLoggedIn) {
+
+    $adminController->deleteAnimal($id);
+
+//Sinon aucune route correspond -> page d'accueil par défaut + Clean url
+} else {
+
+    header("Location: index.php");
+
+}

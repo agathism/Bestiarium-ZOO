@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <footer class="bg-emerald-950 pb-40 pt-8">
+    <footer class="bg-emerald-950 pb-20 pt-8">
         <div class="flex justify-around items-center h-16 px-4 lg:px-8">
             <span>
                 <a href="index.php" class="text-2xl font-bold text-green-600">🌍Bestiarium</a>

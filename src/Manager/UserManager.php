@@ -7,8 +7,9 @@
  *
  * @return array Tableau d'instances Car.
  */
-require_once("DatabaseManager.php");
-require_once("Model/User.php");
+namespace App\Manager;
+
+use App\Model\User;
 
 // Class CarForm... ?
 class UserManager extends DatabaseManager

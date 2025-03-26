@@ -17,9 +17,9 @@
                     <a href="index.php" class="text-2xl font-bold text-green-600">🌍Bestiarium</a>
                     </span>
                     <div class="space-x-8">
-                        <a href="index.php" class="text-xl text-gray-700 hover:text-green-600">Accueil</a>
-                        <a href="categories.php" class="text-xl text-gray-700 hover:text-green-600">Catégories</a>
-                        <a href="contact.php" class="text-xl text-gray-700 hover:text-green-600">Se connecter</a>
+                        <a href="index_admin.php" class="text-xl text-gray-700 hover:text-green-600">Accueil</a>
+                        <!-- <a href="categories.php" class="text-xl text-gray-700 hover:text-green-600">Catégories</a> -->
+                        <a href="login.php" class="text-xl text-gray-700 hover:text-green-600">Se connecter</a>
                     </div>
                 </div>
     </nav>
