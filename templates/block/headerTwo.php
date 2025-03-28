@@ -17,7 +17,7 @@
                     </span>
                     <div class="nav space-x-8">
                         <a href="index.php?action=homePage" class="text-xl text-gray-700 hover:text-green-600">Accueil</a>
-                        <a href="index.php?action=login" class="text-xl text-gray-700 hover:text-green-600">Se connecter</a>
+                        <a href="index.php?action=logout" class="text-xl text-gray-700 hover:text-green-600">Se déconnecter</a>
                     </div>
                 </div>
     </nav>

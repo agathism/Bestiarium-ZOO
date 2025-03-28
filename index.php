@@ -46,7 +46,7 @@ if ($action === 'homePage') {
 //index.php?action=detail&id=12
 } elseif ($action === 'detail' && !is_null($id)) {
 
-    $indexController->detailCar($id);
+    $indexController->detailAnimal($id);
 
 //index.php?action=login
 } elseif ($action === 'login') {
@@ -86,6 +86,6 @@ if ($action === 'homePage') {
 //Sinon aucune route correspond -> page d'accueil par défaut + Clean url
 } else {
 
-    header("Location: index.php");
+    header("Location: index_animal.php");
 
 }

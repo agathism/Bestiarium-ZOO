@@ -86,27 +86,25 @@ class SecurityController
 
                     $user = new User(null, $_POST["username"], $pass);
 
-                    if($this->userManager->insert($user)){
+                    if ($this->userManager->insertUser($user)) {
 
                         $_SESSION["username"] = $user->getUsername();
 
                         header("Location: index.php");
-                        exit(); 
+                        exit();
                     }
                     $errors["password"] = "Problème lors de l'insertion en BDD";
-             
                 }
             }
         }
         require_once("./templates/register.php");
     }
 
-    public function logout(){
+    public function logout()
+    {
 
-        unset($_SESSION["username"]);    
-        header("Location: index.php");
-        exit(); 
-
+        unset($_SESSION["username"]);
+        header("Location: index.php?action=logout");
+        exit();
     }
-
 }

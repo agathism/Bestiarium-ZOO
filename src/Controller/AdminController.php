@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Controller;
 
-use APP\Manager\AnimalManager;
+use App\Manager\AnimalManager;
 use App\Model\Animal;
 
 class AdminController
@@ -13,8 +14,9 @@ class AdminController
         $this->animalManager = new AnimalManager();
     }
 
-     // Route DashboardAdmin ( ancien admin.php ) 
-    // URL : index.php?action=admin
+    // Route DashboardAdmin (ancien admin.php)
+    // HTTP Method: GET
+    // URL: index.php?action=admin
     public function dashboardAdmin()
     {
         //Récuperer les animaux
@@ -23,8 +25,9 @@ class AdminController
         require_once("./templates/index_admin.php");
     }
 
-    // Route DashboardAdmin ( ancien add.php ) 
-    // URL : index.php?action=add
+    // Route AddAnimal (ancien add.php)
+    // HTTP Method: POST
+    // URL: index.php?action=add
     public function addAnimal()
     {
         $errors = [];
@@ -35,10 +38,21 @@ class AdminController
 
             if (empty($errors)) {
                 //Instancier une objet animal avec le sdonnées du formulaire
-                $animal = new Animal(null, $_POST["name"], $_POST["species"], $_POST["family"], $_POST["habitat"], $_POST["diet"], $_POST["lifespan"], $_POST["weight"], $_POST["height"], $_POST["introduction"]);
+                $animal = new Animal(
+                null, 
+                $_POST["name"], 
+                $_POST["species"], 
+                $_POST["family"], 
+                $_POST["habitat"], 
+                $_POST["diet"], 
+                $_POST["lifespan"], 
+                $_POST["weight"], 
+                $_POST["height"], 
+                $_POST["image"], 
+                $_POST["introduction"]);
                 // Ajouter la voiture en BDD  et rediriger
-                $animalManager = new animalManager();
-                $animalManager->insert($animal);
+                $animalManager = new AnimalManager();
+                $animalManager->insertAnimal($animal);
                 $this->dashboardAdmin();
                 exit();
             }
@@ -46,15 +60,15 @@ class AdminController
         require_once("./templates/animal_insert.php");
     }
 
-    // Route editAnimal ( ancien update.php ) 
-    // URL : index.php?action=edit&id=1
+    // Route EditAnimal (ancien update.php)
+    // HTTP Method: GET, POST
+    // URL: index.php?action=edit&id=1
     public function editAnimal(int $id)
     {
         $animal = $this->animalManager->selectByID($id); // Un seul connect DB par page
 
-        //Vérifier si la voiture avec l'ID existe en BDD
+        // Vérifier si l'animal avec l'ID existe en BDD
         if (!$animal) {
-
             header("Location: index.php?action=admin");
             exit();
         }
@@ -75,11 +89,12 @@ class AdminController
                 $animal->setHabitat($_POST["habitat"]);
                 $animal->setDiet($_POST["diet"]);
                 $animal->setSpecies($_POST["lifespan"]);
-                $animal->setWeight($_POST["weight"]);
+                $animal->setLifespan($_POST["lifespan"]);
                 $animal->setHeight($_POST["height"]);
+                $animal->setImage($_POST["image"]);
                 $animal->setIntroduction($_POST["introduction"]);
 
-                $this->animalManager->update($animal);
+                $this->animalManager->updateAnimal($animal);
 
                 header("Location: index.php?action=admin");
                 exit();
@@ -87,21 +102,21 @@ class AdminController
         }
         require_once("./templates/animal_update.php");
     }
-    
+
     public function deleteAnimal(int $id)
     {
         $animal = $this->animalManager->selectByID($id);
-        
+
         //Vérifier si la voiture avec l'ID existe en BDD
         if (!$animal) {
             header("Location: index.php?action=admin");
             exit();
         }
-        
-        //Si le form est validé
+
+        // Si le formulaire est validé
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Supprimer la voiture et rediriger
-            $this->animalManager->deleteByID($animal->getId());
+            $this->animalManager->deleteByID($id);
 
             header("Location: index.php?action=admin");
             exit();
@@ -109,37 +124,40 @@ class AdminController
 
         require_once("./templates/animal_delete.php");
     }
-    function validateAnimalForm(array $errors, array $animalForm): array
+    public function validateAnimalForm(array $errors, array $animalForm): array
     {
-        if (empty($animalForm["name"])) {
-            $errors["animal"] = "le nom de l'animal est manquant";
-        }
-        if (empty($animalForm["species"])) {
-            $errors["species"] = "l'espèce de l'animal est manquante";
-        }
-        if (empty($animalForm["family"])) {
-            $errors["family"] = "la famille de l'animal est manquante";
-        }
-        if (empty($animalForm["habitat"])) {
-            $errors["habitat"] = "l'habitat de l'animal est manquante";
-        }
-        if (empty($animalForm["diet"])) {
-            $errors["diet"] = "le régime de l'animal est manquante";
-        }
-        if (empty($animalForm["lifespan"])) {
-            $errors["lifespan"] = "la durée de vie de l'animal est manquante";
-        }
-        if (empty($animalForm["weight"])) {
-            $errors["weight"] = "le poids de l'animal est manquante";
-        }
-        if (empty($animalForm["height"])) {
-            $errors["height"] = "la taille de l'animal est manquante";
-        }
-        if (empty($animalForm["introduction"])) {
-            $errors["introduction"] = "l'introduction de l'animal est manquante";
+        $requiredFields = [
+            "name" => "le nom de l'animal est manquant",
+            "species" => "l'espèce de l'animal est manquante",
+            "family" => "la famille de l'animal est manquante",
+            "habitat" => "l'habitat de l'animal est manquante",
+            "diet" => "le régime de l'animal est manquante",
+            "lifespan" => "la durée de vie de l'animal est manquante",
+            "weight" => "le poids de l'animal est manquante",
+            "height" => "la taille de l'animal est manquante",
+            "image" => "l'image' de l'animal est manquante",
+            "introduction" => "l'introduction de l'animal est manquante",
+        ];
+
+        foreach ($requiredFields as $field => $errorMessage) {
+            if (empty($animalForm[$field])) {
+                $errors[$field] = $errorMessage;
+            }
         }
         //Démo class animalFormValidator
-        
+
         return $errors;
+    }
+
+    public function verifySession(): void
+    {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        if (!isset($_SESSION["username"])) {
+            header("Location: index.php");
+            exit();
+        }
     }
 }

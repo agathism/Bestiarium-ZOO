@@ -6,37 +6,41 @@ use App\Manager\AnimalManager;
 
 /**
  * IndexController
- * Contient les routes acèssible pas le visiteurs, page accueil, détail
+ * Contient les routes accessibles par les visiteurs, page accueil, détail
  */
-class IndexController{
-    
+class IndexController
+{
+
     private AnimalManager $animalManager;
 
-    public function __construct(){
+    public function __construct()
+    {
         // Quand on crée un IndexController
         // Il contiendra automatiquement un AnimalManager
-        // Utilisable avec $this->AnimalManager
+        // Utilisable avec $this->animalManager
         $this->animalManager = new AnimalManager();
     }
 
     // Route HomePage -> URL : index.php
-    public function homePage(){
-        //Récuperer les voitures
-        $cars = $this->animalManager->selectAll();
-        //Afficher les voitures dans la template
-        require_once("./templates/index_car.php");
+    public function homePage()
+    {
+        //Récupérer les animaux
+        $animals = $this->animalManager->selectAll();
+        //Afficher les animaux dans le template
+        require_once("./templates/index_animal.php");
     }
 
-    // Route DetailCar -> URL: index.php?action=detail&id=10 
-    public function detailCar(int $id){
-         //Récuperer les voitures
-         $car = $this->animalManager->selectByID($id);
-         if($car != false){
-             //Afficher les voitures dans la template
-             require_once("./templates/car_detail.php");
-         }else{
+    // Route DetailAnimal -> URL: index.php?action=detail&id=10 
+    public function detailAnimal(int $id)
+    {
+        //Récupérer l'animal
+        $animal = $this->animalManager->selectByID($id);
+        if ($animal != false) {
+            //Afficher l'animal dans le template
+            require_once("./templates/animal_detail.php");
+        } else {
             header("Location: index.php");
             exit();
-         }
- }
+        }
+    }
 }

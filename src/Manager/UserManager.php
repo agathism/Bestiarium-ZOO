@@ -15,7 +15,7 @@ use App\Model\User;
 class UserManager extends DatabaseManager
 {
     //Class UserManager
-    public function selectUserByUsername(string $username): User|false
+    public function selectByUsername(string $username): User|false
     {
         $requete = self::getConnexion()->prepare("SELECT * FROM user WHERE username = :username;");
         $requete->execute([

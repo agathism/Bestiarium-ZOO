@@ -14,10 +14,11 @@ class Animal
     private ?int $lifespan;
     private ?float $weight;
     private ?float $height;
+    private string $image;
     private string $introduction;
     // private string $image;
 
-    public function __construct(int|null $id, string $name, string $species, string $family, string $habitat, string $diet, int|null $lifespan, float|null $weight, float|null $height, string $introduction)
+    public function __construct(int|null $id, string $name, string $species, string $family, string $habitat, string $diet, int|null $lifespan, float|null $weight, float|null $height,string $image, string $introduction)
     {
         $this->id = $id;
         $this->name = $name;
@@ -28,6 +29,7 @@ class Animal
         $this->lifespan = $lifespan;
         $this->weight = $weight;
         $this->height = $height;
+        $this->image = $image;
         $this->introduction = $introduction;
         // $this->image = $image;
     }
@@ -204,18 +206,18 @@ class Animal
     /**
      * Get the value of image
      */
-    // public function getImage()
-    // {
-    //     return $this->image;
-    // }
+    public function getImage()
+    {
+        return $this->image;
+    }
 
     /**
      * Set the value of height
      *
      * @return  self
      */
-    // public function setImage($image)
-    // {
-    //     $this->image = $image;
-    // }
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
 }

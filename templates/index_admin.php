@@ -1,38 +1,48 @@
-<?php
-// Template de la route admin
-// URL : index.php?action=admin
+<!DOCTYPE html>
+<html lang="fr">
 
-$title = "Administration Garage";
-require_once("block/header.php");
-?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
 
-<div class="container mt-4">
-    <h1 class="text-center mb-4"><?= $title ?></h1>
+<body>
 
-    <div class="m-5">
-        <a class="btn btn-success" href="index.php?action=add">Ajouter une Voiture</a>
-    </div>
+    <?php
+    // Template de la route admin
+    // URL : index.php?action=admin
 
-    <div class="d-flex flex-wrap justify-content-evenly gap-4">
-        <?php foreach ($cars as $car): ?>
-            <div class="col-md-4 mb-4 col-sm-6">
-                <div class="card shadow-sm">
-                    <img src="images/<?= $car->getImage() ?>" 
-                         alt="<?= $car->getModel() ?>" 
-                         class="card-img-top img-fluid rounded col-md-4 col-sm-6" style="height: 200px; width: auto;">                    
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $car->getModel() ?></h5>
-                        <p class="card-text"><?= $car->getBrand() ?> - <?= $car->getHorsePower() ?> chevaux</p>
-                        <div class="d-flex justify-content-between">
-                            <a class="btn btn-primary" href="index.php?action=edit&id=<?= $car->getId() ?>">Modifier</a>
-                            <a class="btn btn-danger" href="index.php?action=delete&id=<?= $car->getId() ?>">Supprimer</a>
+    require_once("block/headerTwo.php");
+    ?>
+    <main>
+        <div class="mt-4">
+            <h1 class="text-center mb-4">Bienvenue</h1>
+            <div class="m-5">
+                <a href="index.php?action=add" class="btn btn-success">Ajouter un animal</a>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <?php foreach ($animals as $animal): ?>
+                    <div class="card col-md-4 mb-4 col-sm-6">
+                    <img src="images/<?= $animal->getImage() ?>" alt="<?= $animal->getName() ?>" >
+                        <div class="card_content">
+                            <h5 class="card_title"><?= $animal->getName() ?></h5>
+                            <p class="card_description"><?= $animal->getHabitat() ?> </p>
+                            <div class="d-flex justify-content-between">
+                                <a href="index.php?action=edit&id=<?= $animal->getId() ?>" class="btn btn-primary">Modifier</a>
+                                <a href="index.php?action=delete&id=<?= $animal->getId() ?>" class="btn btn-danger">Supprimer</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
-        <?php endforeach; ?>
-    </div>
-</div>
+        </div>
+    </main>
 
-<?php
-require_once("block/footer.php");
+    <?php
+    require_once("block/footer.php");
+    ?>
+</body>
+
+</html>

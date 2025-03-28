@@ -1,6 +1,5 @@
 <?php
 namespace App\Manager;
-
 use App\Model\Animal;
 
 class AnimalManager extends DatabaseManager
@@ -14,7 +13,18 @@ class AnimalManager extends DatabaseManager
         $animals = [];
         foreach ($arrayAnimals as $arrayAnimal) {
             //J'instancie un objet avec les données d'une Voiture ( tableau associatif)
-            $animals[] = new Animal($arrayAnimal["id"], $arrayAnimal["name"], $arrayAnimal["species"], $arrayAnimal["family"], $arrayAnimal["habitat"], $arrayAnimal["diet"], $arrayAnimal["lifespan"], $arrayAnimal["weight"], $arrayAnimal["height"], $arrayAnimal["introduction"]);
+            $animals[] = new Animal(
+            $arrayAnimal["id"],
+            $arrayAnimal["name"], 
+            $arrayAnimal["species"], 
+            $arrayAnimal["family"], 
+            $arrayAnimal["habitat"], 
+            $arrayAnimal["diet"], 
+            $arrayAnimal["lifespan"], 
+            $arrayAnimal["weight"], 
+            $arrayAnimal["height"], 
+            $arrayAnimal["image"], 
+            $arrayAnimal["introduction"]);
         }
 
         return $animals;
@@ -31,13 +41,24 @@ class AnimalManager extends DatabaseManager
         $requete->execute([
             ":id" => $id
         ]);
-
         $arrayAnimal = $requete->fetch();
+        if(!$arrayAnimal) {
 
-        $animalObject = new Animal($arrayAnimal["id"], $arrayAnimal["name"], $arrayAnimal["species"], $arrayAnimal["family"], $arrayAnimal["habitat"], $arrayAnimal["diet"], $arrayAnimal["lifespan"], $arrayAnimal["weight"], $arrayAnimal["height"], $arrayAnimal["introduction"]);
-
+            return false;
+        }
         //Retourner l'instance de Car créée avec l'occurence Car de la BDD
-        return $animalObject;
+        return new Animal(
+        $arrayAnimal["id"], 
+        $arrayAnimal["name"], 
+        $arrayAnimal["species"], 
+        $arrayAnimal["family"], 
+        $arrayAnimal["habitat"], 
+        $arrayAnimal["diet"], 
+        $arrayAnimal["lifespan"], 
+        $arrayAnimal["weight"], 
+        $arrayAnimal["height"], 
+        $arrayAnimal["image"], 
+        $arrayAnimal["introduction"]);
     }
 
     /**
@@ -47,9 +68,9 @@ class AnimalManager extends DatabaseManager
      * @param  Car $car
      * @return bool
      */
-    public function insert(Animal $animal): bool
+    public function insertAnimal(Animal $animal): bool
     {
-        $requete = self::getConnexion()->prepare("INSERT INTO animal (name,species,family,habitat,diet,lifespan,weight,height,introduction) VALUES (:name,:species,:family,:habitat,:diet,:lifespan,:weight,:height:introduction);");
+        $requete = self::getConnexion()->prepare("INSERT INTO animal (name,species,family,habitat,diet,lifespan,weight,height,image,introduction) VALUES (:name,:species,:family,:habitat,:diet,:lifespan,:weight,:height,:image,:introduction);");
         $requete->execute([
             ":name" => $animal->getName(),
             ":species" => $animal->getSpecies(),
@@ -59,6 +80,7 @@ class AnimalManager extends DatabaseManager
             ":lifespan" => $animal->getLifespan(),
             ":weight" => $animal->getWeight(),
             ":height" => $animal->getHeight(),
+            ":image" => $animal->getImage(),
             ":introduction" => $animal->getIntroduction()
         ]);
 
@@ -72,9 +94,9 @@ class AnimalManager extends DatabaseManager
      * @param  Car $car
      * @return bool
      */
-    public function update(Animal $animal): bool
+    public function updateAnimal(Animal $animal): bool
     {
-        $requete = self::getConnexion()->prepare("UPDATE animal SET name = :name, species = :species, family = :family, habitat = :habitat, diet = :diet, lifespan = :lifespan, weight = :weight, height = :height, introduction = :introduction WHERE id = :id;");
+        $requete = self::getConnexion()->prepare("UPDATE animal SET name = :name, species = :species, family = :family, habitat = :habitat, diet = :diet, lifespan = :lifespan, weight = :weight, height = :height, image = :image, introduction = :introduction WHERE id = :id;");
         $requete->execute(
             [
                 ":name" => $animal->getName(),
@@ -85,6 +107,7 @@ class AnimalManager extends DatabaseManager
                 ":lifespan" => $animal->getLifespan(),
                 ":weight" => $animal->getWeight(),
                 ":height" => $animal->getHeight(),
+                ":image" => $animal->getImage(),
                 ":introduction" => $animal->getIntroduction(),
                 ":id" => $animal->getId()
             ]
