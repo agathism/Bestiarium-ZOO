@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Récupère toutes les voitures de la base de données.
- *
- * @param PDO $pdo La connexion PDO.
- *
- * @return array Tableau d'instances Car.
- */
 namespace App\Manager;
 
 use App\Model\User;

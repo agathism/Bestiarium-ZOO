@@ -89,7 +89,7 @@ class AdminController
                 $animal->setHabitat($_POST["habitat"]);
                 $animal->setDiet($_POST["diet"]);
                 $animal->setSpecies($_POST["lifespan"]);
-                $animal->setLifespan($_POST["lifespan"]);
+                $animal->setLifespan($_POST["weight"]);
                 $animal->setHeight($_POST["height"]);
                 $animal->setImage($_POST["image"]);
                 $animal->setIntroduction($_POST["introduction"]);

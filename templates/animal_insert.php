@@ -39,14 +39,6 @@
                     <p class="input__description">
                         La famille doit contenir un maximum de 32 charactères.
                     </p>
-                    <?php if (isset($errors['family'])): ?>
-                        <p class="text-danger"><?= $errors['family'] ?></p>
-                    <?php endif; ?>
-                    <label for="habitat" class="input__label font-medium text-base">Habitat</label>
-                    <input id="habitat" type="text" name="habitat" class="input__field block p-1 mt-1 border rounded-sm border-zinc-400 bg-neutral-100" minlength="4" maxlength="32" size="50" value="<?= $_POST['habitat'] ?? '' ?> ">
-                    <p class="input__description">
-                        L'habitat doit contenir un maximum de 32 charactères.
-                    </p>
                     <?php if (isset($errors['habitat'])): ?>
                         <p class="text-danger"><?= $errors['habitat'] ?></p>
                     <?php endif; ?>
@@ -91,7 +83,13 @@
                         <p class="text-danger"><?= $errors['introduction'] ?></p>
                     <?php endif; ?>
                     <div class="modal__footer">
-                        <button class="border rounded-sm bg-neutral-50 hover:bg-emerald-400 align-items-center justify-center cursor-pointer p-2 mt-4 font-medium text-base">Valider</button>
+                        <button class="cursor-pointer transition-all 
+bg-gray-700 text-white px-6 py-2 rounded-lg
+border-green-400
+border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:shadow-xl hover:shadow-green-300 shadow-green-300 active:shadow-none">
+                            Valider
+                        </button>
                     </div>
                 </form>
             </div>
